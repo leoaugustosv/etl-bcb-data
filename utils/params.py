@@ -1,3 +1,29 @@
+from pyspark.sql.types import StructField, StructType, StringType, IntegerType, DoubleType, TimestampType
+
+SCHEMA = StructType([
+    StructField("NM_BANK", StringType(), True),
+    StructField("NM_SEGM", StringType(), True),
+    StructField("DS_PROD", StringType(), True),
+    StructField("CD_SEGM", StringType(), True),
+    StructField("CD_MODL", StringType(), True),
+    StructField("NR_POSI", IntegerType(), True),
+    StructField("DS_MODL", StringType(), True),
+    StructField("IN_INIC_PERI_EXAT", IntegerType(), True),
+    StructField("DT_APROX", StringType(), True),
+    StructField("QT_DIA_APROX", IntegerType(), True),
+    StructField("VL_TAXA_JURO_AM", DoubleType(), True),
+    StructField("VL_TAXA_JURO_AA", DoubleType(), True),
+    StructField("dat_ref_carga", StringType(), True),
+    StructField("dh_exec", TimestampType(), True),
+])
+
+NOME_MESES = {
+    1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
+    5: "Maio", 6: "Junho", 7: "Julho", 8: "Agosto",
+    9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro"
+}
+
+
 PRODUTOS_TST = [
     {
         "nome": "Capital de giro com prazo superior a 365 dias",
@@ -5,7 +31,6 @@ PRODUTOS_TST = [
         "codigoModalidade": "211101",
     },
 ]
-
 
 
 PRODUTOS = [
