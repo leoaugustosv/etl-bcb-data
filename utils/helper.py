@@ -4,6 +4,33 @@ import calendar
 from datetime import date, datetime, timedelta
 from utils.params import NOME_MESES
 
+
+def obter_produtos_bacen(params_url):
+    params_list = []
+    try:
+        body = requests.get(url=params_url).text
+        json_body = json.loads(body)["conteudo"]
+
+    except Exception as e:
+        json_body = []
+        print(f"ERRO: Falha ao obter parâmetros usando a URL: {params_url} - {e}")
+    
+    if json_body:
+        print(f"PARÂMETROS: {len(json_body)} produtos encontrados.")
+        for produto in json_body:
+            product_dict = {}
+            product_dict["nome"] = produto["Modalidade"]
+            product_dict["codigoSegmento"] = produto["codigoSegmento"]
+            product_dict["codigoModalidade"] = produto["codigoModalidade"]
+            params_list.append(product_dict)
+    else:
+        print(f"PARÂMETROS: Nenhum produto foi encontrado.")
+        
+    return params_list
+
+
+
+
 def enviar_request_bacen(url):
     try:
         body = requests.get(url=url).text

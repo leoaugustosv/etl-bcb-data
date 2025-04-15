@@ -23,140 +23,67 @@ NOME_MESES = {
     9: "Setembro", 10: "Outubro", 11: "Novembro", 12: "Dezembro"
 }
 
+URL_PARAMETROS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ParametrosConsulta"
 
-PRODUTOS_TST = [
+PRODUTOS_BKP = [
     {
-        "nome": "Capital de giro com prazo superior a 365 dias",
+        "nome": "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
         "codigoSegmento": "2",
-        "codigoModalidade": "211101",
-    },
-]
-
-
-PRODUTOS = [
-    {
-        "nome": "Aquisição de outros bens",
-        "codigoSegmento": "1",
-        "codigoModalidade": "402101",
+        "codigoModalidade": "502205"
     },
     {
-        "nome": "Aquisição de veículos",
-        "codigoSegmento": "1",
-        "codigoModalidade": "401101",
-    },
-    {
-        "nome": "Cartão de crédito parcelado",
-        "codigoSegmento": "1",
-        "codigoModalidade": "215101",
-    },
-    {
-        "nome": "Cartão de crédito rotativo",
-        "codigoSegmento": "1",
-        "codigoModalidade": "204101",
-    },
-    {
-        "nome": "Cheque especial",
-        "codigoSegmento": "1",
-        "codigoModalidade": "216101",
-    },
-    {
-        "nome": "Crédito pessoal consignado INSS",
-        "codigoSegmento": "1",
-        "codigoModalidade": "218101",
-    },
-    {
-        "nome": "Crédito pessoal consignado privado",
-        "codigoSegmento": "1",
-        "codigoModalidade": "219101",
-    },
-    {
-        "nome": "Crédito pessoal consignado público",
-        "codigoSegmento": "1",
-        "codigoModalidade": "220101",
-    },
-    {
-        "nome": "Crédito pessoal não consignado",
-        "codigoSegmento": "1",
-        "codigoModalidade": "221101",
-    },
-    {
-        "nome": "Desconto de cheques",
-        "codigoSegmento": "1",
-        "codigoModalidade": "302101",
-    },
-    {
-        "nome": "Financiamento imobiliário com taxas de mercado",
-        "codigoSegmento": "1",
-        "codigoModalidade": "903101",
-    },
-    {
-        "nome": "Financiamento imobiliário com taxas reguladas",
-        "codigoSegmento": "1",
-        "codigoModalidade": "905101",
-    },
-    {
-        "nome": "Arrendamento mercantil de veículos",
-        "codigoSegmento": "1",
-        "codigoModalidade": "1205101",
-    },
-    {
-        "nome": "Antecipação de faturas de cartão de crédito",
+        "nome": "Antecipação de faturas de cartão de crédito - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "303101",
+        "codigoModalidade": "303101"
     },
     {
-        "nome": "Capital de giro com prazo até 365 dias",
+        "nome": "Capital de giro com prazo até 365 dias - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "210101",
+        "codigoModalidade": "210101"
     },
     {
-        "nome": "Capital de giro com prazo superior a 365 dias",
+        "nome": "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes",
         "codigoSegmento": "2",
-        "codigoModalidade": "211101",
+        "codigoModalidade": "210204"
     },
     {
-        "nome": "Cheque especial",
+        "nome": "Capital de giro com prazo superior a 365 dias - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "216101",
+        "codigoModalidade": "211101"
     },
     {
-        "nome": "Conta garantida",
+        "nome": "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
         "codigoSegmento": "2",
-        "codigoModalidade": "217101",
+        "codigoModalidade": "211204"
     },
     {
-        "nome": "Desconto de cheques",
+        "nome": "Cheque especial - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "302101",
+        "codigoModalidade": "216101"
     },
     {
-        "nome": "Desconto de duplicata",
+        "nome": "Conta garantida - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "301101",
+        "codigoModalidade": "217101"
     },
     {
-        "nome": "Vendor",
+        "nome": "Conta garantida - Pós-fixado referenciado em juros flutuantes",
         "codigoSegmento": "2",
-        "codigoModalidade": "404101",
+        "codigoModalidade": "217204"
     },
     {
-        "nome": "Capital de giro com prazo até 365 dias",
+        "nome": "Desconto de cheques - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "210204",
+        "codigoModalidade": "302101"
     },
     {
-        "nome": "Capital de giro com prazo superior a 365 dias",
+        "nome": "Desconto de duplicatas - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "211204",
+        "codigoModalidade": "301101"
     },
     {
-        "nome": "Conta garantida",
+        "nome": "Vendor - Pré-fixado",
         "codigoSegmento": "2",
-        "codigoModalidade": "217204",
-    },
-    {
-        "nome": "Adiantamento sobre contratos de câmbio",
-        "codigoSegmento": "2",
-        "codigoModalidade": "502205",
-    },
+        "codigoModalidade": "404101"
+    }
 ]
