@@ -5,17 +5,24 @@ Extraindo histórico de taxas de juros que cada banco ofertou em cada produto.
 Permite obter dados:
 
 - Por **ano**;
-- Por **mês**;
+- Por **mês** ou **range de meses**;
 - Por **dia específico**;
 - Em relação ao **dia atual**;
 
 
 **Fonte dos dados:** Banco Central do Brasil.
 
-## Tabela gerada
+## Tabelas
 
-- **Visão:** Instituição + Produto
+### Principal (Juros Mercado)
+
+**FUNÇÃO:** Armazena as informações de taxas de juros praticadas pelo mercado financeiro para cada produto/modalidade.
+
+- **Visão:** Modalidade
 - **Chave:** NM_BANK + CD_MODL
+- **Partição:** dat_ref_carga
+
+<br/>
 
 | Nome | Tipo | Descrição | Opções
 | --- | --- | --- | --- |
@@ -33,6 +40,54 @@ Permite obter dados:
 | VL_TAXA_JURO_AA | double | Valor da taxa de juros ao ano | -
 | dat_ref_carga | string | Data de referência da carga. É a data alvo em que se buscou a taxa de juros. | -
 | dh_exec | timestamp | Data de execução/ingestão | -
+
+---
+### Produtos (Modalidades)
+
+**FUNÇÃO:** Armazena os produtos/modalidades regulamentados pelo Banco Central e seus respectivos parâmetros.
+
+- **Visão:** Modalidade
+- **Chave:** CD_MODL
+- **Partição:** dat_ref_carga
+
+<br/>
+
+| Nome | Tipo | Descrição | Opções
+| --- | --- | --- | --- |
+| CD_MODL | string | Código parametrizado da modalidade do produto | -
+| DS_MODL | string | Descrição da modalidade | -
+| CD_SEGM | string | Código parametrizado do segmento do produto | 1 (PF)<br/>2 (PJ)
+| NM_BANK | string | Nome da instituição financeira | -
+| NM_SEGM | string | Nome do segmento do produto | Pessoa Jurídica<br/>Pessoa Física
+| TP_MODL | string | Tipo da modalidade | D (Diária)<br/>M (Mensal)
+| DS_TIPO_PERI_MODL | string | Descrição do tipo de período da modalidade | Diária<br/>Mensal
+| dat_ref_carga | string | Data de referência da carga | -
+| dh_exec | timestamp | Data de execução/ingestão | -
+
+
+---
+### Períodos
+
+**FUNÇÃO:** Armazena os períodos disponíveis e seus respectivos tipos para cada produto/modalidade.
+
+- **Visão:** Período
+- **Chave:** DT_INIC_PERI
+- **Partição:** dat_ref_carga
+
+<br/>
+
+| Nome | Tipo | Descrição | Opções
+| --- | --- | --- | --- |
+| DS_PERI | string | Descrição do período | -
+| DT_INIC_PERI | string | Data de início do período | Pessoa Jurídica<br/>Pessoa Física
+| DT_FINA_PERI | string | Data final do período | -
+| TP_MODL | string | Tipo da modalidade | D (Diária)<br/>M (Mensal)
+| DS_TIPO_PERI_MODL | string | Descrição do tipo de período da modalidade | Diária<br/>Mensal
+| dat_ref_carga | string | Data de referência da carga | -
+| dh_exec | timestamp | Data de execução/ingestão | -
+---
+
+<br/>
 
 
 ## Dependências
