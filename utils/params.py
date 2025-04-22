@@ -25,6 +25,21 @@ NOME_MESES = {
 URL_PARAMETROS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ParametrosConsulta"
 URL_PERIODOS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ConsultaDatas"
 
+INSTITUICOES_ESPECIFICAS = [
+    "BCO SANTANDER (BRASIL) S.A.",
+    "ITAÚ UNIBANCO HOLDING S.A.",
+    "FIN. ITAU CBD CFI",
+    "ITAÚ UNIBANCO S.A.",
+    "BANCO ITAÚ CONSIGNADO S.A.",
+    "BCO BRADESCO S.A.",
+    "BCO BRADESCO FINANC. S.A.",
+    "BANCO BRADESCARD",
+    "NU FINANCEIRA S.A. CFI",
+    "CAIXA ECONOMICA FEDERAL",
+    "BCO CAIXA GERAL BRASIL S.A.",
+    "BCO DO BRASIL S.A."
+]
+
 PRODUTOS_BKP = [
     {
         "Segmento": "Pessoa Física", 
