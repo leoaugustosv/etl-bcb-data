@@ -16,6 +16,11 @@ SCHEMA = StructType([
     StructField("dh_exec", TimestampType(), True),
 ])
 
+SCHEMA_AUXILIAR = StructType([
+    StructField("VL_TAXA", DoubleType(), True),
+    StructField("dat_ref_carga", StringType(), True),
+])
+
 NOME_MESES = {
     1: "Janeiro", 2: "Fevereiro", 3: "Março", 4: "Abril",
     5: "Maio", 6: "Junho", 7: "Julho", 8: "Agosto",
@@ -24,6 +29,10 @@ NOME_MESES = {
 
 URL_PARAMETROS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ParametrosConsulta"
 URL_PERIODOS = "https://www.bcb.gov.br/api/servico/sitebcb/HistoricoTaxaJurosDiario/ConsultaDatas"
+URL_SELIC = "https://www.bcb.gov.br/api/servico/sitebcb/bcdatasgs?tronco=estatisticas&dataInicial=data_inicio_selic&dataFinal=dd/mm/yyyy&serie=432"
+URL_ICC_CUSTO_CRED = "https://www.bcb.gov.br/api/servico/sitebcb/bcdatasgs?tronco=estatisticas&dataInicial=01/01/2012&dataFinal=dd/mm/yyyy&serie=25351"
+URL_INFLACAO = "https://www.bcb.gov.br/api/servico/sitebcb/bcdatasgs?tronco=estatisticas&dataInicial=01/01/2012&dataFinal=dd/mm/yyyy&serie=13522"
+URL_TAXA_DESEMPREGO = "https://www.bcb.gov.br/api/servico/sitebcb/bcdatasgs?tronco=estatisticas&dataInicial=01/01/2012&dataFinal=dd/mm/yyyy&serie=24369"
 
 INSTITUICOES_ESPECIFICAS = [
     "BCO SANTANDER (BRASIL) S.A.",

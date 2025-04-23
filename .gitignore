@@ -1,3 +1,5 @@
 env/
 pytest.py
 */__pycache__/*
+csv/
+parquet/

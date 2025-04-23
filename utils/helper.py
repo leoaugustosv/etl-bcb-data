@@ -1,9 +1,12 @@
+import os
 import requests
 import json
 import calendar
+import time
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from utils.params import NOME_MESES
+import pyspark.sql.functions as F
 
 
 def obter_produtos_bacen(params_url):
@@ -67,6 +70,135 @@ def obter_periodos_bacen(periodos_url):
         print(f"PERÍODOS: Nenhum período foi encontrado.")
         
     return periodos_listas, periodos_ingest_list
+
+
+def obter_selic_bacen(param_url, data_alvo, data_inicial):
+    param_url = param_url.replace("dd/mm/yyyy",data_alvo).replace("data_inicio_selic",data_inicial)
+    nome_taxa = "SELIC"
+    lista_taxas = []
+    try:
+        body = requests.get(url=param_url).text
+        json_body = json.loads(body)["conteudo"]
+
+    except Exception as e:
+        json_body = []
+        print(f"ERRO: Falha ao obter taxa {nome_taxa} usando a URL: {param_url} - {e}")
+    
+    if json_body:
+        print(f"{nome_taxa}: {len(json_body)} datas encontradas.")
+        for infos_data in json_body:
+            taxa_dict = {
+                f"VL_TAXA":float(infos_data.get("valor")),
+                "dat_ref_carga":reformatar_data_string(infos_data.get("data"), "%d/%m/%Y", "%Y-%m-%d")
+            }
+            lista_taxas.append(taxa_dict)
+    else:
+        print(f"{nome_taxa}: Nenhuma data foi encontrada.")
+        
+    return lista_taxas
+
+
+def obter_icc_bacen(param_url, data_alvo):
+    param_url = param_url.replace("dd/mm/yyyy",data_alvo)
+    nome_taxa = "ICC"
+    lista_taxas = []
+    try:
+        body = requests.get(url=param_url).text
+        json_body = json.loads(body)["conteudo"]
+
+    except Exception as e:
+        json_body = []
+        print(f"ERRO: Falha ao obter taxa {nome_taxa} usando a URL: {param_url} - {e}")
+    
+    if json_body:
+        print(f"{nome_taxa}: {len(json_body)} datas encontradas.")
+        for infos_data in json_body:
+            taxa_dict = {
+                f"VL_TAXA":float(infos_data.get("valor")),
+                "dat_ref_carga":reformatar_data_string(infos_data.get("data"), "%d/%m/%Y", "%Y-%m-%d")
+            }
+            lista_taxas.append(taxa_dict)
+    else:
+        print(f"{nome_taxa}: Nenhuma data foi encontrada.")
+        
+    return lista_taxas
+
+
+
+
+def obter_inflacao_bacen(param_url, data_alvo):
+    param_url = param_url.replace("dd/mm/yyyy",data_alvo)
+    nome_taxa = "INFLACAO"
+    lista_taxas = []
+    try:
+        body = requests.get(url=param_url).text
+        json_body = json.loads(body)["conteudo"]
+
+    except Exception as e:
+        json_body = []
+        print(f"ERRO: Falha ao obter taxa {nome_taxa} usando a URL: {param_url} - {e}")
+    
+    if json_body:
+        print(f"{nome_taxa}: {len(json_body)} datas encontradas.")
+        for infos_data in json_body:
+            taxa_dict = {
+                f"VL_TAXA":float(infos_data.get("valor")),
+                "dat_ref_carga":reformatar_data_string(infos_data.get("data"), "%d/%m/%Y", "%Y-%m-%d")
+            }
+            lista_taxas.append(taxa_dict)
+    else:
+        print(f"{nome_taxa}: Nenhuma data foi encontrada.")
+        
+    return lista_taxas
+
+
+def obter_desemprego_bacen(param_url, data_alvo):
+    param_url = param_url.replace("dd/mm/yyyy",data_alvo)
+    nome_taxa = "DESEMPREGO"
+    lista_taxas = []
+    try:
+        body = requests.get(url=param_url).text
+        json_body = json.loads(body)["conteudo"]
+
+    except Exception as e:
+        json_body = []
+        print(f"ERRO: Falha ao obter taxa {nome_taxa} usando a URL: {param_url} - {e}")
+    
+    if json_body:
+        print(f"{nome_taxa}: {len(json_body)} datas encontradas.")
+        for infos_data in json_body:
+            taxa_dict = {
+                f"VL_TAXA":float(infos_data.get("valor")),
+                "dat_ref_carga":reformatar_data_string(infos_data.get("data"), "%d/%m/%Y", "%Y-%m-%d")
+            }
+            lista_taxas.append(taxa_dict)
+    else:
+        print(f"{nome_taxa}: Nenhuma data foi encontrada.")
+        
+    return lista_taxas
+
+
+
+
+def obter_taxas_auxiliares_bacen(spark, SCHEMA_AUXILIAR, selic, icc, inflacao, desemprego):
+
+    selic = spark.createDataFrame(selic, schema=SCHEMA_AUXILIAR).withColumnRenamed("VL_TAXA", "VL_TAXA_SELIC")
+    icc = spark.createDataFrame(icc, schema=SCHEMA_AUXILIAR).withColumnRenamed("VL_TAXA", "VL_TAXA_ICC")
+    inflacao = spark.createDataFrame(inflacao, schema=SCHEMA_AUXILIAR).withColumnRenamed("VL_TAXA", "VL_TAXA_INFLACAO")
+    desemprego = spark.createDataFrame(desemprego, schema=SCHEMA_AUXILIAR).withColumnRenamed("VL_TAXA", "VL_TAXA_DESEMPREGO")
+
+    df = (
+        selic
+        .join(icc, "dat_ref_carga", "left")
+        .join(inflacao, "dat_ref_carga", "left")
+        .join(desemprego, "dat_ref_carga", "left")
+        .orderBy(F.col("dat_ref_carga").desc())
+    )
+
+    return df
+
+
+
 
 
 
@@ -396,3 +528,81 @@ def extrair_dados_bacen_ano(PRODUTOS:list, PERIODOS:dict, ano:str = None, mes_in
             df_list.append(linha)
 
     return df_list
+
+
+def spark_df_to_csv(df, csv_name):
+    csv_save_location = f"{os.getcwd()}\csv"
+
+    df.limit(1048576).repartition(1).write.mode("overwrite").option("header", True).option("encoding", "UTF-8").csv(csv_save_location)
+    clear_unused_output_files("csv", csv_save_location)
+
+    csv_curr_name = first_dict_key(sorted_directory_files_by_mtime(csv_save_location))
+    rename_file("csv", csv_save_location, csv_curr_name, csv_name)
+
+    print(f"CSV: Arquivo salvo. Caminho: {csv_save_location}\\{csv_name}.csv.")
+
+
+def spark_df_to_parquet(df, parquet_name):
+    parquet_save_location = f"{os.getcwd()}\\parquet".replace("\\","\\\\")
+    df.repartition(1).write.mode("overwrite").parquet(parquet_save_location)
+    clear_unused_output_files("parquet", parquet_save_location)
+
+    parquet_curr_name = first_dict_key(sorted_directory_files_by_mtime(parquet_save_location))
+    rename_file("parquet", parquet_save_location, parquet_curr_name, parquet_name)
+
+    print(f"PARQUET: Arquivo salvo. Caminho: {parquet_save_location}\\{parquet_name}.parquet.")
+
+
+def clear_unused_output_files(filetype:str, path:str):
+    deleted_files = []
+
+    files_in_dir = os.listdir(path)
+    print(files_in_dir)
+    for f in files_in_dir:
+        if f.endswith(".crc") or f.endswith("_SUCCESS"):
+            print(f"{path}\\{f}")
+            os.remove(f"{path}\\{f}")
+            deleted_files.append(f)
+    print(f"{filetype.upper()}: {len(deleted_files)} arquivos temporários excluídos.")
+
+
+def rename_file(filetype, path, target_file_name, new_name):
+
+    try:
+        os.rename(f"{path}\\{target_file_name}", f"{path}\\{new_name}.{filetype}")
+        status = True
+    except FileNotFoundError:
+        print("RENAME: Arquivo não encontrado.")
+        status = False
+    except PermissionError:
+        print("RENAME: Permissão negada. Verifique se nenhum outro programa está utilizando o arquivo e se você tem permissão para renomeá-lo.")
+        status = False
+    return status
+
+
+def sorted_directory_files_by_mtime(path):
+    filetimes = {}
+
+    for f in os.listdir(path):
+        modified_time = datetime.fromtimestamp(os.stat(f"{path}\\{f}").st_mtime)
+        filetimes[f] = modified_time
+
+    sorted_filetimes = {}
+
+    for k in sorted(filetimes, key=filetimes.get, reverse=True):
+        sorted_filetimes[k] = filetimes.get(k)
+
+    return sorted_filetimes
+
+def first_dict_key(dict:dict):
+    for key in dict:
+        return key
+    
+
+
+def reformatar_data_string(data:str, formato_atual:str, formato_final:str):
+    try:
+        data_str = datetime.strptime(data, formato_atual)
+        return data_str.strftime(formato_final)
+    except Exception as e:
+        raise Exception(f"{e}")
