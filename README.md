@@ -2,9 +2,9 @@
 
 Extraindo histórico de taxas de juros que cada banco ofertou em cada produto. 
 
-<img src="assets/ex-grafico-consig-privado.png"></img>
+<img src="utils/assets/ex-grafico-consig-privado.png"></img>
 
-<img src="assets/ex-grafico-kgiro-pre-ate365.png"></img>
+<img src="utils/assets/ex-grafico-kgiro-pre-ate365.png"></img>
 
 Permite obter dados:
 
