@@ -46,6 +46,26 @@ Permite obter dados:
 | dh_exec | timestamp | Data de execução/ingestão | -
 
 ---
+### Taxas Auxiliares
+
+**FUNÇÃO:** Armazena taxas que auxiliam no embasamento de análises do mercado financeiro Banco Central.
+
+- **Visão:** Data
+- **Chave:** dat_ref_carga
+- **Partição:** dat_ref_carga
+
+<br/>
+
+| Nome | Tipo | Descrição | Opções
+| --- | --- | --- | --- |
+| dat_ref_carga | string | Data de referência da carga e da taxa. | -
+| VL_TAXA_SELIC | double | Valor da taxa SELIC.<br/><br/>Influencia outras taxas de juros do país, como taxas de empréstimos, financiamentos e aplicações financeiras. | -
+| VL_TAXA_ICC | double | Valor da taxa ICC (Indicador de Custo do Crédito).<br/><br/>Taxa que ilustra o custo médio das operações de crédito que integram a carteira de empréstimos, financiamentos e arrendamento mercantil das instituições financeiras integrantes do Sistema Financeiro Nacional. | -
+| VL_TAXA_INFLACAO | double | Valor da taxa IPCA (Índice Nacional de Preços ao Consumidor Amplo) acumulado nos últimos 12 meses.<br/><br/>Visa medir a variação de preços de uma cesta de produtos e serviços consumida pela população, mostrando se os preços aumentaram ou diminuíram de um mês para o outro. | -
+| VL_TAXA_DESEMPREGO | double | Valor da taxa de desocupação com base na PNAD Contínua (IBGE).<br/><br/>Mede a porcentagem de pessoas na força de trabalho que estão desempregadas: indivíduos acima de 14 anos que não estão trabalhando, mas estão disponíveis e tentam encontrar trabalho. | -
+
+---
+
 ### Produtos (Modalidades)
 
 **FUNÇÃO:** Armazena os produtos/modalidades regulamentados pelo Banco Central e seus respectivos parâmetros.
